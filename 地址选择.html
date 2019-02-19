@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/base.css">
+		<link rel="stylesheet" type="text/css" href="css/address.css"/>
+		<script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+        <script src="js/areacargoSelect.js"></script>
+	</head>
+	<body>
+		<div class="speciallist-fixed-search">
+        	<div class="search">
+	            <span class="title">专线搜索</span>
+	            <input type="text" id="consignoraddress" maxlength="5" name="rciShipperProvince" class="search_destination" data-action="4" placeholder="请输入出发地">
+	            <div id="consignoraAddr" class="area-tab"></div>
+	            <img src="images/special-starend.png">
+	            <input id="consigneeaddress" name="rciConsigneeProvince"  data-action="5"  type="text"class="search_destination" placeholder="请输入目的地"/>
+				<div id="consigneeAddr" class="area-tab"></div>
+	            
+	            <input type="text" class="companyname" placeholder="请输入公司名称" id="companyName" >
+	            <input type="button" class="searchbtn"  value="专线搜索"  onclick="dosearch('')"> 
+	            <span class="clear-search">清空搜索</span>
+	        </div>
+	        <div class="hot-search" id="hotSearch">
+	            <p>热搜路线：<span>北京-上海</span><span>杭州-上海</span><span>北京-杭州</span><span>南京-上海</span><span>北京-乌鲁木齐</span></p>
+	        </div>
+        </div>
+        
+        <script type="text/javascript">
+			ZXB.AreaQuery.areaSelects.init();
+//		    function lookPhone(msId){
+//		    	var loginStatus = "$loginStatus";
+//		    	if($loginStatus=="1"){
+//		    		jQuery.ajax({ 
+//		                url:"/line/phone?msId="+msId, 
+//		                type:"get", 
+//		                dataType:'json',
+//		                success:function(data){  
+//		                    if(data == "101"){
+//		                       alert("未登录");
+//		                    }else if(data == "201") {
+//		                       alert("用户不存在");
+//		                    }else if(data == "500") {
+//		                        alert('系统异常,请重试！');
+//		                    }else{
+//		                    	$("#shipper_phone").html(data);
+//		                    	$("#tk3").show();
+//		                    }
+//		                },
+//		                error:function(){
+//		                    alert('网络异常！');
+//		                }
+//		            });
+//		    		
+//		    	}else{
+//		    		alert("未登录");
+//		    	}
+//		    }
+		    
+		    $(".clear-search").click(function () {
+		    	$("#consignoraddress").val("");
+		    	$("#consigneeaddress").val("");
+//		    	$("#companyName").val("");
+//		    	window.location.href="/line/list";
+		   });
+		    
+		    $(function(){
+//		    	var consignoraddress = "$!searchDto.consignoraddress";
+//		    	var consigneeAddress = "$!searchDto.consigneeaddress";
+//		    	var companyName = "$!searchDto.companyName";
+//		    	if(consignoraddress != null || consignoraddress != ''){
+//		    		$("#consignoraddress").val(consignoraddress);
+//		    	}
+//		    	if(consigneeAddress != null || consigneeAddress != ''){
+//		    		$("#consigneeaddress").val(consigneeAddress);
+//		    	}
+//		    	if(companyName != null || companyName != ''){
+//		    		$("#companyName").val(companyName);
+//		    	}
+		    });
+//		    	$(function(){
+//		    	var consignoraddressobj=$("#consignoraddress").val();
+//		    	if(consignoraddressobj==null||consignoraddressobj==""||consignoraddressobj=="全国"){
+//		    		var cityName=getCookie("cityName");
+//		    		if(getCookie("cityName")!=null&&getCookie("cityName")!=""){
+//		    			$("#consignoraddress").val(decodeURIComponent(cityName))
+//		    		}
+//		    		else{
+//		    			var myCity = new BMap.LocalCity();
+//		    			myCity.get(myFun);
+//		    		}
+//		    	}
+//		    	initsch();
+//		    })
+		    	
+		    	
+		    function dosearch(param) {
+		        var url = "/line/list?";
+		        var startplace = $("#consignoraddress").val();
+		        var endplace = $("#consigneeAddress").val();
+		        var companyName = $("#companyName").val();
+		        var startplace_province=$("#consignoraddress").attr("address-index")
+		    	if(startplace_province&&startplace!=""&&startplace!="全国"){
+		    		startplace=startplace_province+"-"+startplace;
+		    	}
+		    	if(startplace!=""){
+		    		url+="consignoraddress="+startplace+"&";
+		        }
+		    	if(endplace!=""){
+		    		url+="consigneeAddress="+endplace+"&";
+		        }
+		    	if(companyName!=""){
+		    		url+="companyName="+companyName+"&";
+		    	}
+		    	url+=param;
+		    	url=url.substring(0,url.length-1)
+		    	window.location.href=url;
+		    }
+		    
+			function myFun(result){
+				var cityName = result.name;
+				cityName=cityName.substring(0,cityName.length-1);
+				$("#consignoraddress").val(cityName)
+				var cityName = encodeURIComponent(cityName);
+				addCookieLong("cityName",cityName);
+				
+			}	
+		    
+			$(function(){
+		        $(".search_destination").click(function(){
+		            $(this).toggleClass("search_destination1");
+		        });
+		        
+		    });
+			
+			//点击热门城市 赋值给本文框
+			 function hotCity(){
+//		    	$("#consignoraddress").val(this.text());
+//		    	$("#consigneeaddress").val(this.text());
+				console.log(this.innerHTML)
+		    }
+			 $(function(){
+			 	var Allspan = document.getElementById("hotSearch").getElementsByTagName("span");
+			 	for(var i=0;i<Allspan.length;i++){
+			 		Allspan[i].onclick = function(){
+			 			$("#consignoraddress").val(this.innerText);
+		    			$("#consigneeaddress").val(this.innerText);
+					  	console.log(this.innerText)
+					};
+			 	}
+			 })
+        </script>
+	</body>
+</html>
