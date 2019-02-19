@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
+
 		<link rel="stylesheet" type="text/css" href="css/base.css">
 		<link rel="stylesheet" type="text/css" href="css/address.css"/>
 		<script type="text/javascript" src="js/jquery-3.2.1.js"></script>
         <script src="js/areacargoSelect.js"></script>
-	</head>
-	<body>
+
 		<div class="speciallist-fixed-search">
         	<div class="search">
 	            <span class="title">专线搜索</span>
